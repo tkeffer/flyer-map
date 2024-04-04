@@ -1,9 +1,9 @@
-<html>
+<html lang="en">
 
 <head>
     <title>Where is Flyer?</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
-    <script type="text/javascript" type="text/javascript">
+    <script type="text/javascript">
         let mqtt;
         const reconnectTimeout = 2000;
         const host = "localhost";
@@ -11,6 +11,7 @@
 
         function onFailure(message) {
             console.log("Connection Attempt to Host " + host + "Failed");
+            console.log(message)
             setTimeout(MQTTconnect, reconnectTimeout);
         }
 
