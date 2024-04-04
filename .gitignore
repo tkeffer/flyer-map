@@ -1,0 +1,17 @@
+# We do not want to commit the Google API key:
+google-api-key.js
+
+*~
+.idea
+.project
+.pydevproject
+.settings
+*.pyc
+*.pyo
+junk*
+out
+build
+MANIFEST
+node_modules
+bower_components
+test-results
