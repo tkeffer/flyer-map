@@ -40,7 +40,10 @@
     let marker;
     let mqtt;
     const reconnectTimeout = 2000;
+    // Connect to localhost:
     const host = "localhost";
+    // Alternatively, connect to threefools.org:
+    // const host = "35.155.200.41";
     const port = 8080;
 
     function onFailure(message) {
@@ -52,10 +55,12 @@
     function onMessageArrived(msg) {
         // Destructure the payload for convenience
         const {payloadString, destinationName} = msg;
-        const latLon = getPosition(JSON.parse(payloadString));
-        console.log(latLon);
-        const {latitude, longitude} = latLon;
-        marker.position = {lat: latitude, lng: longitude};
+        const infoDict = getInfoDict(JSON.parse(payloadString));
+        console.log(infoDict);
+        if (infoDict.latLon) {
+            const {latitude, longitude} = infoDict.latLon;
+            marker.position = {lat: latitude, lng: longitude};
+        }
     }
 
     function onConnect() {
@@ -64,6 +69,7 @@
         console.log("Connected ");
         // The uuid seems to be changing with every invocation of SignalK, so for now, use a wild card:
         mqtt.subscribe("signalk/+/navigation.position");
+        mqtt.subscribe("signalk/+/environment.depth.belowTransducer")
     }
 
     function MQTTconnect() {
