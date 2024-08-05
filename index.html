@@ -29,7 +29,7 @@
             }));
         d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
     })({
-        key: "AIzaSyDuCJBz3wS_UtDb5rY6AmHeg-qo_QFl1u0",
+        key: "AIzaSyBylqNRwGbPrkbK8oh6E9y_fzyNaZumyRs",
         v: "quarterly",
         // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
         // Add other bootstrap parameters as needed, using camel case.
@@ -54,7 +54,7 @@
 
     function onMessageArrived(msg) {
         // Destructure the payload for convenience
-        const {payloadString, destinationName} = msg;
+        const {payloadString} = msg;
         const infoDict = getInfoDict(JSON.parse(payloadString));
         console.log(infoDict);
         if (infoDict.latLon) {
@@ -69,7 +69,10 @@
         console.log("Connected ");
         // The uuid seems to be changing with every invocation of SignalK, so for now, use a wild card:
         mqtt.subscribe("signalk/+/navigation.position");
+        mqtt.subscribe("signalk/+/navigation.speedOverGround")
+        mqtt.subscribe("signalk/+/navigation.courseOverGroundTrue")
         mqtt.subscribe("signalk/+/environment.depth.belowTransducer")
+        mqtt.subscribe("signalk/+/environment.water.temperature")
     }
 
     function MQTTconnect() {

@@ -40,7 +40,22 @@ The plugin [signalk-mqtt-gw](https://github.com/tkurki/signalk-mqtt-gw) should b
 
 Then configure the plugin in the signalk admin webpage, nominally http://localhost:3000/. Tell the MQTT plugins which
 topics you wish to publish to the MQTT broker. Look under "Server", then "Plugin Config", then "Signal K - MQTT Push".
-Add any interesting topics.
+Add any interesting topics. You can also set how often they get published.
+
+Example:
+
+| SignalK path                        |  Refresh rate |
+|:------------------------------------|--------------:|
+| `navigation.position`               |            20 |
+| `navigation.speedOverGround`        |            20 |
+| `navigation.courseOverGroundTrue`   |            20 |
+| `environment.depth.belowTransducer` |            20 |
+| `environment.water.temperature`     |            60 |
+
+
+When you're all done, it should look something like this:
+
+<img src= "images/mqtt-subscribes.png" alt="MQTT subscriptions" style="border: 2px solid grey;">
 
 Double check that the topics are getting published:
 

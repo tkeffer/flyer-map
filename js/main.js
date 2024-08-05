@@ -7,6 +7,13 @@ var getInfoDict = function(signalk_obj){
         if (values[i].path === 'navigation.position') {
             infoDict['latLon'] = values[i].value;
         }
+        else if (values[i].path === 'navigation.speedOverGround') {
+            infoDict['speedOverGround'] = values[i].value;
+        }
+        else if (values[i].path === 'navigation.courseOverGroundTrue') {
+            // Convert from radians to degrees:
+            infoDict['courseOverGroundTrue'] = values[i].value * 57.295779513;
+        }
         else if (values[i].path === 'environment.depth.belowTransducer') {
             infoDict['transducerDepth'] = values[i].value;
         }
