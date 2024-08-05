@@ -29,18 +29,19 @@ or, for demo data
 
 ## Configure SignalK server
 
-Figure out which topics you want to watch. You can discover available data streams under the "Data Browser" tab. For
-example, `navigation.position` and `environment.depth.belowTransducer` would give location and depth (below transducer),
-respectively.
-
-The plugin [signalk-mqtt-gw](https://github.com/tkurki/signalk-mqtt-gw) should be installed in the SignalK server.
+Install the plugin [signalk-mqtt-gw](https://github.com/tkurki/signalk-mqtt-gw) in the SignalK server. This will allow the server to publish to an MQTT
+broker.
 
     cd ~/.signalk
     npm install signalk-mqtt-gw
 
-Then configure the plugin in the signalk admin webpage, nominally http://localhost:3000/. Tell the MQTT plugins which
-topics you wish to publish to the MQTT broker. Look under "Server", then "Plugin Config", then "Signal K - MQTT Push".
-Add any interesting topics. You can also set how often they get published.
+Figure out which paths you want to watch. You can discover available data streams under the "Data Browser" tab. For
+example, `navigation.position` and `environment.depth.belowTransducer` would give location and depth (below transducer),
+respectively.
+
+Then configure the plugin in the signalk admin webpage, nominally http://localhost:3000/ to watch those paths and
+publish any changes to the broker. Look under "Server", then "Plugin Config", then "Signal K - MQTT Push". Add any
+interested paths. You can also set how often they get published.
 
 Example:
 
