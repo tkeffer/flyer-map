@@ -8,7 +8,8 @@ var getInfoDict = function(signalk_obj){
             infoDict['latLon'] = values[i].value;
         }
         else if (values[i].path === 'navigation.speedOverGround') {
-            infoDict['speedOverGround'] = values[i].value;
+            // Convert from m/s to knots
+            infoDict['speedOverGround'] = values[i].value * 1.9438;
         }
         else if (values[i].path === 'navigation.courseOverGroundTrue') {
             // Convert from radians to degrees:
