@@ -19,21 +19,33 @@ Edit the file `/etc/mosquitto/mosquitto.conf` and add the following lines
     protocol websockets
     allow_anonymous true
 
-## Start the SignalK server
+Port `1883` is used to publish to the broker, port `8080` is used to communicate with the websocket client in the
+browser. If you are using a remote host, you may need to punch a hole through its firewall for ports `1883` and `8080`.
+
+## SignalK
+
+Install the SignalK server:
+
+    npm install -g signalk-server
+
+then start it either standalone
 
     signalk-server
 
-or, for demo data
+or using demo data
 
     signalk-server --sample-n2k-data
 
-## Configure SignalK server
+### Install the MQTT plugin
 
-Install the plugin [signalk-mqtt-gw](https://github.com/tkurki/signalk-mqtt-gw) in the SignalK server. This will allow the server to publish to an MQTT
-broker.
+The plugin must be installed from the configuration directory `~/.signalk`:
 
     cd ~/.signalk
-    npm install signalk-mqtt-gw
+    npm install signalk-mqtt-push
+
+Then restart the SignalK server
+
+### Configure the MQTT plugin
 
 Figure out which paths you want to watch. You can discover available data streams under the "Data Browser" tab. For
 example, `navigation.position` and `environment.depth.belowTransducer` would give location and depth (below transducer),
