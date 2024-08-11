@@ -1,28 +1,80 @@
-// Extract data out of the parsed JSON object.
-var getInfoDict = function(signalk_obj){
-    const values = signalk_obj.updates[0].values;
-    const infoDict = {}
-    // Search for the paths we know about "navigation.position":
-    for (let i in values) {
-        if (values[i].path === 'navigation.position') {
-            infoDict['latLon'] = values[i].value;
-        }
-        else if (values[i].path === 'navigation.speedOverGround') {
-            // Convert from m/s to knots
-            infoDict['speedOverGround'] = values[i].value * 1.9438;
-        }
-        else if (values[i].path === 'navigation.courseOverGroundTrue') {
-            // Convert from radians to degrees:
-            infoDict['courseOverGroundTrue'] = values[i].value * 57.295779513;
-        }
-        else if (values[i].path === 'environment.depth.belowTransducer') {
-            infoDict['transducerDepth'] = values[i].value;
-        }
-        else if (values[i].path === 'environment.water.temperature') {
-            // Convert from Kelvin to Celsius
-            infoDict['waterTemperature'] = values[i].value - 273.15;
-        }
+const unitInfo = {
+    "navigation.position.latitude": {
+        name: "Latitude",
+        unit: "º"
+    },
+    "navigation.position.longitude": {
+        name: "Longitude",
+        unit: "º"
+    },
+    "navigation.speedOverGround": {
+        name: "Speed over ground",
+        unit: " kn"
+    },
+    "navigation.courseOverGroundTrue": {
+        name: "Course over ground",
+        unit: "ºT"
+    },
+    "environment.depth.belowTransducer": {
+        name: "Depth",
+        unit: " m"
+    },
+    "environment.water.temperature": {
+        name: "Water temperature",
+        unit: "ºC"
     }
-    return infoDict;
+}
+
+/*
+    A SignalK object looks like:
+    {
+        "context": "vessels.urn:mrn:imo:mmsi:367199590",
+        "updates": [{
+            "timestamp": "2024-08-07T22:49:02.000Z",
+            "$source": "Velocityyd.YD",
+            "values": [{"path": "navigation.position", "value": {"longitude": -122.65223, "latitude": 45.601395}}]
+        }]
+
+    or like
+
+    {
+        "context": "vessels.urn:mrn:imo:mmsi:367199590",
+        "updates": [{
+            "timestamp": "2024-08-11T20:52:41.018Z",
+            "$source": "velocity2000.127",
+            "values": [{"path": "navigation.speedOverGround", "value": 0}]
+        }]
+    }
+    }
+ */
+
+
+// Extract data out of the parsed JSON object.
+var getInfoDicts = function (signalk_obj) {
+
+    let infoDicts = [];
+    for (let update of signalk_obj.updates) {
+        const infoDict = {}
+        infoDict['timestamp'] = dayjs(update.timestamp)
+        console.log("update.values=", update.values)
+        for (let value of update.values) {
+            // Special treatment for navigation position because it has two values: latitude and longitude
+            if (value.path === 'navigation.position') {
+                infoDict['navigation.position.latitude'] = {
+                    value: value.value.latitude
+                }
+                infoDict['navigation.position.longitude'] = {
+                    value: value.value.longitude
+                }
+            } else {
+                infoDict[value.path] = {
+                    value: value.value
+                }
+            }
+        }
+        infoDicts.push(infoDict)
+    }
+
+    return infoDicts;
 
 }
